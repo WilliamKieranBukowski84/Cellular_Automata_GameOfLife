@@ -1,0 +1,50 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+public class Cell {
+
+	//variables 
+	public int i;
+	public int j;
+	
+	public int x;
+	public int y;
+	
+	//state of a cell (alive or dead)
+	int state;
+	
+	//cell constructor
+	public Cell(int a, int b, int state)
+	{
+		this.i = a;
+		this.j = b;
+		this.state = state;
+	}
+	
+	//sho life or death, (life is 1, death is 0) and set the colors to reflect this
+	public void show(int size, Graphics2D g)
+	{
+		this.x = i * size;
+		this.y = j * size;
+		
+		Rectangle r = new Rectangle(x,y,size,size);
+		
+		if(state == 1) {
+			g.setColor(Color.BLACK);
+		}
+		else
+		{
+			g.setColor(Color.WHITE);
+		}
+		
+		g.fillRect(x, y, size, size);
+		
+		g.setColor(Color.LIGHT_GRAY);
+		
+		g.drawLine(x,y,x+size,y);
+		g.drawLine(x+size, y, x+size, y+size);
+		g.drawLine(x+size, y+size, x,  y+size);
+		g.drawLine(x, y + size, x, y);
+	}
+}
