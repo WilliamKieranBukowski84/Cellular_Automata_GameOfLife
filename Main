@@ -1,161 +1,35 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
- 
+import java.awt.Toolkit;
 
-/**
- * @author Will
- *		So this works, just need some serious editing to look more like the target project
- */
- 
+import javax.swing.JFrame;
+
 public class Main {
-   
-    static int width = 100, height = 100;
-    static boolean isPlaying = false;
-    static JButton[][] Grid1 = new JButton[width][height];
-     
-    // Timer and delay are here.
-    static Timer timer1 = new Timer(10, null);
-    static boolean[][] Grid2 = new boolean [width][height], nextMove2 = new boolean [width][height];
-     
-     
-    public static void main(String[] args){
-     
-        timerInit();
+	
+	public static void main(String[] args) {
+		
+		 //creates a graphics frame
+		 JFrame frame = new JFrame("Conways Game of Life ");
          
-        JFrame frame = new JFrame("CONWAY's GAME OF LIFE - WILLIAM K BUKOWSKI");
+		 //new GameOfLife object
+         GameOfLife gameOfLife = new GameOfLife();
          
-        frame.setSize(width*7, height*7);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        GridLayout a = new GridLayout(width, height, 0, 0);
+         //set up the screensize
+         gameOfLife.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
          
-        JPanel panel = new JPanel(a);
+         //set up the close window button
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          
-        frame.add(panel);
- 
-        for(int i = 0; i < width; i++){
-                for(int j = 0; j < width; j++){
- 
-                    JButton temp = new JButton();
- 
-                    temp.setSize(5, 5);
-                    temp.setBackground(java.awt.Color.BLACK);
-                    temp.setName(i + "  ,  " + j);
-                    panel.add(temp);
-                    Grid1[i][j] = temp;
-                }
-            }
- 
-        JFrame frame2 = new JFrame();
-        frame2.setSize(150, 150);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        JButton play = new JButton("PLAY");
-        frame2.add(play, BorderLayout.PAGE_START);
-        play.addActionListener(new ActionListener(){
- 
-                public void actionPerformed(ActionEvent e){
-                    if(e.getSource()==play){
- 
-                       timer1.start();
-                       isPlaying = true;
-                    }
-                }      
-            });
- 
-        JButton stop = new JButton("STOP");
-        frame2.add(stop, BorderLayout.PAGE_END);
-        stop.addActionListener(new ActionListener(){
- 
-                public void actionPerformed(ActionEvent e) {
-                    if(e.getSource()==stop){
- 
-                        isPlaying = false;
-                        timer1.stop();
-                    }
-                } 
-            });
- 
- 
-        frame.setVisible(true);
-        frame2.setVisible(true);
-    }
-     
-     public static void timerInit(){
-            
-        timer1.setRepeats(true);
-        timer1.addActionListener( new ActionListener(){
-       
-            public void actionPerformed(ActionEvent e) {
+         //add game of life window to the frame
+         frame.add(gameOfLife);
          
-                repaint();
-            }
-        });
-    }
-      
-      
-    public static void repaint(){
+         //sets up frame to size
+         frame.pack();
          
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-                if(Grid1[i][j].getBackground()==Color.BLUE) Grid2[i][j] = true;
-                else Grid2[i][j] = false;
-            }
-        }
+         //window to center of screen
+         frame.setLocationRelativeTo(null);
          
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-                if(check(i,j)){
-                    nextMove2[i][j] = true;
-                }
-                else if(check(i,j)==false)nextMove2[i][j] = false;    
-            }
-        }
-        redraw();
-    }
-     
-    public static void redraw(){
+         //set the window to be visible
+         frame.setVisible(true);
          
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-                    if(Grid2[i][j]&&nextMove2[i][j]){}
-                    else if(Grid2[i][j]==false&&nextMove2[i][j]){Grid1[i][j].setBackground(Color.BLUE);}
-                    else Grid1[i][j].setBackground(Color.black);
-            }
-        }
-    }
-      
-    public static boolean check(int i, int j){
-         
-        int adjacent = 0;
-         
-        if(j > 0){
-            if(Grid2[i][j-1]==true) adjacent++;
-            if(i>0) if(Grid2[i-1][j-1]==true) adjacent++;
-            if(i<width-1) if(Grid2[i+1][j-1]==true) adjacent++;
-        }
-         
-        if(j < height-1){
-            if(Grid2[i][j+1]==true) adjacent++;
-            if(i>0) if(Grid2[i-1][j+1]==true) adjacent++;
-            if(i<width-1) if(Grid2[i+1][j+1]==true) adjacent++;
-        }
-         
-        if(i>0) {
-        	if(Grid2[i-1][j]==true) adjacent++;
-        	if(i>0) if(Grid2[i-1][j]==true) adjacent++;
-        	if(i<width-1) if(Grid2[i+1][j]==true) adjacent++;
-        }
-        // Condition for making a cell "alive"; set to "0" to keep it simple.
-        if(adjacent == 0) return true;
- 
-            return false;
-    }
+	}
+
 }
